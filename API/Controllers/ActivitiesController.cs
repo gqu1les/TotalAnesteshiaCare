@@ -12,12 +12,12 @@ public class ActivitiesController(AppDbContext context) : BaseAPIController
     [HttpGet]
     public async Task<ActionResult<List<Activity>>> GetActivities()
     {
-        return await context.Activities.ToListAsync();
+        return await context.TotalAnesthesiaCare.ToListAsync();
     }
     [HttpGet("{id}")]
     public async Task<ActionResult<Activity>> GetActivityDetail(string id)
     {
-        var activity = await context.Activities.FindAsync(id);
+        var activity = await context.TotalAnesthesiaCare.FindAsync(id);
 
         if (activity == null) return NotFound();
 

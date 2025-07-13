@@ -7,7 +7,7 @@ public class DbInitializer
 {
     public static async Task SeedData(AppDbContext context)
     {
-        if (context.Activities.Any()) return;
+        if (context.TotalAnesthesiaCare.Any()) return;
 
         var activities = new List<Activity>
         {
@@ -119,7 +119,7 @@ public class DbInitializer
             }
         };
 
-        context.Activities.AddRange(activities);
+        context.TotalAnesthesiaCare.AddRange(activities);
 
         await context.SaveChangesAsync();
     }

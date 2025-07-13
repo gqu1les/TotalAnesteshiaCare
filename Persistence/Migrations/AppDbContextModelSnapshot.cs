@@ -56,7 +56,7 @@ namespace Persistence.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Activities");
+                    b.ToTable("TotalAnesthesiaCare");
                 });
 #pragma warning restore 612, 618
         }
