@@ -2,20 +2,22 @@ using System;
 using MediatR;
 using Persistence;
 
-namespace Application.TotalAnesthesia.Commands;
+namespace Application.Activities.Commands;
 
 public class DeleteActivity
 {
-    public class Commands : IRequest
+    public class Command : IRequest
     {
         public required string Id { get; set; }
     }
-    public class Handler(AppDbContext context) : IRequestHandler<Commands>
+
+    public class Handler(AppDbContext context) : IRequestHandler<Command>
     {
-        public async Task Handle(Commands request, CancellationToken cancellationToken)
+        public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var activity = await context.TotalAnesthesiaCare.FindAsync([request.Id], cancellationToken)
-                ?? throw new Exception("Cannot find Activity");
+            var activity = await context.TotalAnesthesiaCare
+                .FindAsync([request.Id], cancellationToken) 
+                    ?? throw new Exception("Cannot find activity");
 
             context.Remove(activity);
 

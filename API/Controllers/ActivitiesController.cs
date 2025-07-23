@@ -1,3 +1,4 @@
+using Application.Activities.Commands;
 using Application.TotalAnesthesia.Commands;
 using Application.TotalAnesthesia.Queries;
 using Domain;
@@ -22,8 +23,8 @@ public class ActivitiesController : BaseAPIController
     {
         return await Mediator.Send(new CreateActivity.Command { Activity = activity });
     }
-    [HttpPut]
 
+    [HttpPut]
     public async Task<ActionResult> EditActivity(Activity activity)
     {
         await Mediator.Send(new EditActivity.Command { Activity = activity });
@@ -31,15 +32,12 @@ public class ActivitiesController : BaseAPIController
         return NoContent();
     }
 
-    [HttpDelete]
+    [HttpDelete("{id}")]
     public async Task<ActionResult> DeleteActivity(string id)
     {
-        await Mediator.Send(new DeleteActivity.Commands { Id = id });
+        await Mediator.Send(new DeleteActivity.Command { Id = id });
+
         return Ok();
     }
-
-
-
-
 }
 
