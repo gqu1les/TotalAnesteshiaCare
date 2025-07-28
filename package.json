@@ -1,5 +1,8 @@
 {
   "dependencies": {
-    "@fontsource/roboto": "^5.2.6"
+    "@fontsource/roboto": "^5.2.6",
+    "@mui/material": "^7.2.0",
+    "@mui/x-date-pickers": "^8.9.0",
+    "dayjs": "^1.11.13"
   }
 }
