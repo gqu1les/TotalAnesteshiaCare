@@ -1,12 +1,14 @@
 using Application.Core;
 using Application.TotalAnesthesia.Queries;
+using Application.TotalAnesthesia.Validators;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
+using FluentValidation;
+using API.Middleware;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-//service to call and update or create DB
+//~~~~~~~~~~~ SERVICES ~~~~~~~~~~~~~~~~~~~~~//
 builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -14,8 +16,14 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 
 builder.Services.AddCors();
 builder.Services.AddControllers();
-builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>());
+builder.Services.AddMediatR(x =>
+{
+    x.RegisterServicesFromAssemblyContaining<GetActivityList.Handler>();
+    x.AddOpenBehavior(typeof(ValidationBehavior<,>));
+});
 builder.Services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+builder.Services.AddValidatorsFromAssemblyContaining<CreateActivityValidator>();
+builder.Services.AddTransient<ExceptionMiddleware>();
 
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 
@@ -23,6 +31,8 @@ var app = builder.Build();
 // allowing access to from DB to Vit(react)
 app.UseCors(x => x.AllowAnyHeader().AllowAnyMethod()
     .WithOrigins("http://localhost:3000", "https://localhost:3000"));
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Configure the HTTP request pipeline.
 app.MapControllers();
